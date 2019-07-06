@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Countries of the world compared</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="css/dc.min.css" type="text/css" />
+
+	<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+	<script type="text/javascript" src="js/jquery.csv-0.71.min.js"></script>
+	
+    <script type="text/javascript" src="js/d3.min.js"></script>
+	<script type="text/javascript" src="js/toolbox.js"></script>
+<style>
+#frame{
+	
+	margin: auto;
+	width: 100%;
+	height: auto;
+	margin-top: -20px; 
+	background: white;
+}
+#listBoxes{
+	 
+
+	/*border-bottom: 1px solid green; */
+	padding-right: 4px;
+	padding-left: 4px;
+	padding-top: 10px;
+	padding-bottom:10px;
+	height: auto;
+	text-align:center;
+	vertical-align:middle;
+}
+.aListBox{
+	display: inline-block;
+    margin:0 auto;
+    
+    height: 3.2rem;
+    background: #ff0000;
+	width: 15rem;
+/*
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+*/
+	margin-left: 0px;
+	margin-right:0px;
+	font-family: 'Times New Roman';
+
+}
+#listBoxes select option{
+
+	border: 0px solid red;
+	background: white;
+	font-family: "Times New Roman" !important;
+	font-size: 1.4rem;
+	background: inherited;
+}
+#listBoxes select{
+	vertical-align: middle;
+	max-width: 140px ;
+	max-height:auto;
+	border: 1px solid green;
+
+	/*Vertically center the drop-down listbox within its containing div */
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	font-family: "Times New Roman", Times, serif;
+	font-size: 1.4rem;	
+}
+#main{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;	
+}
+#main h3{
+	background: white;
+	color: black;
+	font-family: "Times New Roman", Times, serif;
+	text-align:center;
+	font-weight: 500;
+}
+
+.radioDiv:nth-child(odd){
+	display: inline-block;
+	width: 110px;
+	border: 1px solid black;
+	background: rgb(255,255,255);
+		position: relative;
+	vertical-align: middle;
+	}
+	
+.radioDiv:nth-child(even){
+	display: inline-block;
+	width: 110px;
+	border: 1px solid black;
+	background: rgb(255,255,255);
+		position: relative;
+	vertical-align: middle;
+	}
+	
+	
+.radioDivDensity{
+	display: inline-block;
+	width: 240px;
+	border: 1px solid black;
+	background: rgb(255,255,255);
+		position: relative;
+	vertical-align: middle;
+
+	}
+#outerRadioDiv{
+	text-align:center;
+}
+#header{
+	width: 100%;
+	text-align:center;
+	margin: 0 auto;
+	background: black;
+	color: rgb(200, 200, 200);
+	font-family: 'times new roman';
+	font-size: 20px;
+	height:50px;
+}
+#titleDiv{
+	position: relative;
+	vertical-align: middle;
+	/*
+	top: 50%;
+	transform: translateY(-50%);
+	*/
+	
+}
+
+#listBox1{
+	background: #1f77b4;
+}
+#listBox2{
+	background: #ff7f0e;
+}
+#listBox3{
+	background: #2ca02c;
+}
+#listBox4{
+	background: #d62728;
+}
+#listBox5{
+	background: #9467bd;
+}
+#listBox6{
+	background: #8c564b;
+}
+#listBox7{
+	background: #e277c2;
+}
+#listBox8{
+	background: #7f7f7f;
+}    
+  .axis text {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16pt;
+  }
+  .axis .label {
+	font-size: 16pt;
+  }
+
+  .axis path, .axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+  }
+
+  .x.axis text {
+	font-size: 16pt;
+  }
+
+/* outer div that surrounds the chart div */
+ #chartTitleDiv{
+	margin:0 auto;
+	width: 800px;
+	height: 450px;
+	
+	background: rgb(240, 240, 240);
+  }
+  #chartTitleDiv p{
+  	text-align: center;
+	font-family: 'Times New Roman';
+	font-size: 2rem;
+	font-weight: 500;
+	color: rgb(0, 100, 0);
+  }
+
+  #chartDiv{
+	border: 0px solid green;
+	width: inherit;
+	height: inherit;
+	margin:0 auto;
+  }
+  .sort-button{
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+}
+
+</style>
+</head>
+<body>
+	<div id="header">
+		<div id="titleDiv">Countries of the world compared</div>
+	</div>	
+
+	<div id="frame">
+		<div id="listBoxes">
+			<div id="listBox1" class="aListBox"></div>
+			<div id="listBox2" class="aListBox"></div>
+			<div id="listBox3" class="aListBox"></div>
+			<div id="listBox4" class="aListBox"></div>
+			<div id="listBox5" class="aListBox"></div>
+			<div id="listBox6" class="aListBox"></div>
+			<div id="listBox7" class="aListBox"></div>
+			<div id="listBox8" class="aListBox"></div>
+
+		</div>
+
+		<form>
+			<div id="outerRadioDiv">
+				<div class="radioDiv">
+					<label for="r1"> <input id="r1" type="radio" name="country" value="population" checked="checked" onclick="btnCompareClick()"> Population</label>
+				</div>
+				<div class="radioDiv">
+					<label for="r2"><input id="r2" type="radio" name="country" value="area" onclick="btnCompareClick()"> Area sq.mi</label>
+				</div>
+				<div class="radioDivDensity">
+					<label for="r3"><input id="r3" type="radio" name="country" value="density" onclick="btnCompareClick()"> Population Density per sq. mi</label>
+				</div>
+				<div class="radioDiv">
+					<label for="r4"><input id="r4" type="radio" name="country" value="gdp" onclick="btnCompareClick()"> GDP</label>
+				</div>
+				<div class="radioDiv">
+					<label for="r5"><input id="r5" type="radio" name="country" value="literacy" onclick="btnCompareClick()"> Literacy</label>
+				</div>
+				<div class="radioDiv">
+					<label for="r6"><input id="r6" type="radio" name="country" value="phones" onclick="btnCompareClick()"> Phones</label>
+				</div>
+				<div class="sort-button">
+					<button type="button" onclick="btnSortClick()" class="btn btn-primary btn-sm  compare-button">Sort</button>
+				</div>
+
+			</div>
+		</form>
+
+	</div> <!-- End of <div id="frame"> -->
+	<p>&nbsp;</p>
+	<div id="chartTitleDiv">
+		<p id="titleId">.</p>
+		<div id="chartDiv"></div>
+	</div>
+
+
+<script>
+
+/*---------------------------------------------------------
+	Create an instance of the Toolbox class in the global var TB.
+	It reads in the countries.csv data into a matrix.
+	Then setup the 8 drop-down list boxes with a default country selected in 
+	each of them.
+	Then wait for the user to click the compare button.
+*/
+var TB = new Toolbox("data/countries.csv");
+$( document ).ready(function() {
+	
+   console.log(TB.message);
+   TB.createCountriesMatrix();
+   console.log(TB.message);
+    //TB.testDisplayTable('output-panel');
+	TB.createDropDownList('listBox1', 98, 'List1');		//Ireland
+	TB.createDropDownList('listBox2', 213, 'List2');	//United Kingdom
+	TB.createDropDownList('listBox3', 69, 'List3');		//France
+	TB.createDropDownList('listBox4', 101, 'List4');	//Italy
+	TB.createDropDownList('listBox5', 76, 'List5');		//Germany
+	TB.createDropDownList('listBox6', 103, 'List6');	//Japan
+	TB.createDropDownList('listBox7', 114, 'List7');	//Latvia
+	TB.createDropDownList('listBox8', 169, 'List8');	//Russia
+	
+	btnCompareClick();
+});
+
+/*---------------------------------------------------------
+	The user has selected his/her countryies from the drop-down 
+	list boxes and clicked the 'Compare' button. 
+	Call a method in the TB object to generate the various barcharts
+	in their appropriate divs.
+*/
+function btnCompareClick(){
+	var radioBtn, barchartRadio = -1;
+	
+	//Which of the 6 radio buttens is selected?	
+	for(let i = 0; i < 6; i +=1){
+		radioBtn = document.getElementById("r"+ (i + 1));
+		if(radioBtn['checked'] == true){
+			barchartRadio = i;
+			break;
+		}
+	}
+	
+	var countryIndexes = Array(8);
+	for(let i = 0; i < 8; i +=1){
+		//Get the index number of each of the 8 chosen countries.
+		countryIndexes[i] = document.getElementsByName("List" + (i + 1))[0].value;
+	}
+	
+	TB.generateBarchart('titleId', 'chartDiv', countryIndexes, barchartRadio);
+	return false;
+}
+/*---------------------------------------------------------
+	1. Sort the countries on the bars in decending order.
+	2. have the placement of the drop-down listboxes re-select the correct countries in descending order left to right.
+		from listbox left to right.
+*/
+function btnSortClick(){
+
+	var radioBtn, barchartRadio = -1;
+	
+	//Which of the 6 radio buttens is selected?	
+	for(let i = 0; i < 6; i +=1){
+		radioBtn = document.getElementById("r"+ (i + 1));
+		if(radioBtn['checked'] == true){
+			barchartRadio = i;
+			break;
+		}
+	}
+	
+	var countryIndexes = Array(8);
+	for(let i = 0; i < 8; i +=1){
+		//Get the index number of each of the 8 chosen countries.
+		countryIndexes[i] = document.getElementsByName("List" + (i + 1))[0].value;
+	}
+
+	TB.doSort('titleId', 'chartDiv', countryIndexes, barchartRadio);
+	
+	return false;
+}
+</script>
+    
+</body>
+</html>
